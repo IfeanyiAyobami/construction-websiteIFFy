@@ -86,3 +86,60 @@
 .reveal,.anim{opacity:1!important;visibility:visible!important;filter:none!important}
 @media(max-width:1000px){.mega-header{top:12px!important}.mega-inner{width:calc(100% - 24px);height:66px;padding:0 16px;background:rgba(11,23,22,.26)!important}.mega-header:has(.mega-mobile){position:fixed!important;top:0!important}}
 @media print{.reveal,.anim,.inter-hero-content>*{opacity:1!important;visibility:visible!important;filter:none!important;transform:none!important}}
+
+/* Mobile overlay correction: megaEnter was written for desktop dropdowns and
+   translated the full-screen mobile panel left by 50%. */
+@media (max-width: 1000px) {
+  .mega-header:has(.mega-mobile) {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    z-index: 99999 !important;
+  }
+  .mega-header:has(.mega-mobile) .mega-inner {
+    position: absolute !important;
+    top: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: calc(100% - 24px) !important;
+    z-index: 2 !important;
+  }
+  .mega-mobile {
+    position: fixed !important;
+    inset: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+    animation: mobileMenuFadeIn .28s ease-out both !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    padding: 105px max(22px, 6vw) 35px !important;
+    z-index: 1 !important;
+  }
+  .mega-mobile-inner {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 650px !important;
+    margin-inline: auto !important;
+  }
+  .mega-mobile-inner > a, .mega-mobile-group > button {
+    min-width: 0 !important;
+    font-size: clamp(26px, 7vw, 46px) !important;
+  }
+  .mega-mobile-inner svg { flex-shrink: 0; }
+}
+@keyframes mobileMenuFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mega-mobile { animation: none !important; }
+}
