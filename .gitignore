@@ -1,22 +1,8 @@
-
-# Dependencies
-/node_modules/
-
-# Next.js build files
-/.next/
-/out/
-
-# Netlify
-/.netlify/
-
-# Environment variables
+node_modules/
+.next/
+.netlify/
 .env
 .env.*
 !.env.example
-
-# Logs
 *.log
-
-# System files
 .DS_Store
-Thumbs.db
