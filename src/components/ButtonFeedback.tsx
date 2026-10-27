@@ -1,0 +1,4 @@
+'use client';
+import {useEffect} from 'react';
+/** Short colour feedback for mouse, touch and keyboard activation. */
+export default function ButtonFeedback(){useEffect(()=>{const timers=new Map<HTMLElement,ReturnType<typeof setTimeout>>();const click=(event:MouseEvent)=>{if(!(event.target instanceof Element))return;const el=event.target.closest<HTMLElement>('button, a.btn, a.inter-btn, a.mega-cta, a.header-cta, a.ws-primary');if(!el||el.matches(':disabled,[aria-disabled="true"]'))return;const old=timers.get(el);if(old)clearTimeout(old);el.classList.add('ka-click-feedback');timers.set(el,setTimeout(()=>{el.classList.remove('ka-click-feedback');timers.delete(el)},450))};document.addEventListener('click',click);return()=>{document.removeEventListener('click',click);timers.forEach((timer,el)=>{clearTimeout(timer);el.classList.remove('ka-click-feedback')})}},[]);return null}

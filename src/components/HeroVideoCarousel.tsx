@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, MoveDownRight, Pause, Play } from 
 import gsap from 'gsap';
 
 const slides = [
-  { eyebrow:'BUILT ON EXPERTISE. GROUNDED IN TRUST.',title:'ENGINEERING THE FUTURE.',description:'We turn ambitious ideas into structures and spaces that shape the way we live, work and connect.',video:'/videos/hero/building-construction.mp4',poster:'/images/hero/building-poster.jpg',label:'BUILDING CONSTRUCTION'},
+  { eyebrow:'BUILT ON EXPERTISE. GROUNDED IN TRUST.',title:'TOMORROW. BUILT TODAY.',description:'We turn ambitious ideas into structures and spaces that shape the way we live, work and connect.',video:'/videos/hero/building-construction.mp4',poster:'/images/hero/building-poster.jpg',label:'BUILDING CONSTRUCTION'},
   { eyebrow:'CONNECTING PEOPLE AND PLACES',title:'INFRASTRUCTURE THAT INSPIRES.',description:'Infrastructure designed to connect communities and move the future forward.',video:'/videos/hero/infrastructure.mp4',poster:'/images/hero/infrastructure-poster.jpg',label:'CIVIL INFRASTRUCTURE'},
   { eyebrow:'PRECISION IN EVERY DETAIL',title:'EXCELLENCE IN EVERY STRUCTURE.',description:'Engineering insight and thoughtful execution at every stage of a project.',video:'/videos/hero/engineering.mp4',poster:'/images/hero/engineering-poster.jpg',label:'ENGINEERING EXPERTISE'},
   { eyebrow:'BUILT WITH PURPOSE',title:'SHAPING WHAT COMES NEXT.',description:'Building enduring spaces that support the way people live and work.',video:'/videos/hero/completed-projects.mp4',poster:'/images/hero/completed-poster.jpg',label:'PROJECT DELIVERY'},
@@ -38,7 +38,7 @@ export default function HeroVideoCarousel(){
   <div className="container hero-content"><div className="hero-carousel-copy" ref={copy} key={active}><div className="eyebrow"><span className="dot"/> {slides[active].eyebrow}</div><h1>{slides[active].title}</h1><p>{slides[active].description}</p><div className="hero-actions"><a className="btn btn-lime" href="#projects">Explore Our Work <ArrowUpRight size={17}/></a><a className="btn btn-outline" href="#services">Our Expertise <ArrowRight size={17}/></a></div></div>
   <div className="hero-carousel-controls"><div className="hero-carousel-label"><span>0{active+1} / 0{slides.length}</span><strong>{slides[active].label}</strong></div><div className="hero-carousel-buttons"><button type="button" onClick={()=>go(active-1)} aria-label="Previous slide"><ArrowLeft size={18}/></button><button type="button" onClick={()=>setPaused(v=>!v)} aria-label={paused?'Resume carousel':'Pause carousel'}>{paused?<Play size={17}/>:<Pause size={17}/>}</button><button type="button" onClick={()=>go(active+1)} aria-label="Next slide"><ArrowRight size={18}/></button></div></div>
   <div className="hero-carousel-dots" aria-label="Select a hero slide">{slides.map((s,i)=><button key={s.label} type="button" onClick={()=>go(i)} aria-label={`Show slide ${i+1}: ${s.label}`} aria-current={active===i?'true':undefined}><span style={{transform:`scaleX(${active===i?progress:0})`}}/></button>)}</div>
-  <div className="hero-bottom"><span>MONUMENT CONSTRUCTION — CONCEPT SHOWCASE</span><a href="#about">SCROLL TO EXPLORE <MoveDownRight size={17}/></a></div></div>
+  <div className="hero-bottom"><span>KONSADEM ASSOCIATES / ENGINEERS & CONSULTANTS</span><a href="#about">SCROLL TO EXPLORE <MoveDownRight size={17}/></a></div></div>
   <span className="hero-vertical">PRECISION IN EVERY DETAIL</span>
  </section>
 }

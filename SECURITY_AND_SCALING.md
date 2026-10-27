@@ -1,4 +1,4 @@
-# MONUMENT CMS: Security and scaling checklist
+# KONSADEM CMS: Security and scaling checklist
 
 This is a hardened **development baseline**, not a security-certified production release.
 

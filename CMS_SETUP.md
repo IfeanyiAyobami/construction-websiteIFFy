@@ -1,4 +1,4 @@
-# MONUMENT Construction — Content Studio (Phase 1)
+# KONSADEM Associates — Content Studio (Phase 1)
 
 ## What is included
 - `/admin` protected login, responsive dashboard, editor for projects, posts, team, services, testimonials; drafts/publish/archive, search, image upload, gallery URLs, deletion confirmation.
