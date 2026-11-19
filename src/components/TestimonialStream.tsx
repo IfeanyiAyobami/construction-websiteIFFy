@@ -4,14 +4,16 @@ import gsap from 'gsap';
 import {usePublished} from './CmsPublic';
 
 type Review={id:string;name?:string;role?:string;quote?:string;image_url?:string};
+
 const samples:Review[]=[
- {id:'sample-1',name:'Chinedu Obi',role:'Commercial development client',image_url:'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=160',quote:'Their approach to planning, communication and technical detail gave us confidence at every stage.'},
- {id:'sample-2',name:'Adaeze Nwosu',role:'Property development partner',image_url:'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=160',quote:'What impressed us most was how the team translated a complicated brief into a clear, practical delivery plan.'},
- {id:'sample-3',name:'Tobi Adebayo',role:'Infrastructure stakeholder',image_url:'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=160',quote:'A collaborative team with a genuine commitment to doing the work carefully and getting the details right.'},
- {id:'sample-4',name:'Amara Okafor',role:'Residential project client',image_url:'https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg?auto=compress&cs=tinysrgb&w=160',quote:'Every conversation was clear and considered. We always understood the next step and the thinking behind it.'},
- {id:'sample-5',name:'Femi Adeyemi',role:'Project delivery partner',image_url:'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=160',quote:'The team brought together practical expertise and careful coordination throughout the project.'},
- {id:'sample-6',name:'Nneka Eze',role:'Development consultant',image_url:'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=160',quote:'A professional, responsive team that listened closely and paid attention to the details that mattered.'}
+ {id:'sample-1',name:'Illustrative quote 01',role:'Water infrastructure',quote:'The team made the technical options clear and kept us informed through each stage.'},
+ {id:'sample-2',name:'Illustrative quote 02',role:'Project supervision',quote:'We always knew what had been completed, what needed attention and what came next.'},
+ {id:'sample-3',name:'Illustrative quote 03',role:'Environmental assessment',quote:'The recommendations were practical and grounded in what we saw on site.'},
+ {id:'sample-4',name:'Illustrative quote 04',role:'Engineering design',quote:'The drawings and supporting notes gave the delivery team a clear starting point.'},
+ {id:'sample-5',name:'Illustrative quote 05',role:'Infrastructure advisory',quote:'They helped us understand the trade-offs before committing to a direction.'},
+ {id:'sample-6',name:'Illustrative quote 06',role:'Construction coordination',quote:'Questions from the field were handled clearly, with decisions recorded for the whole team.'},
 ];
+
 function Track({reviews,reverse,paused,startIndex=0}:{reviews:Review[];reverse:boolean;paused:boolean;startIndex?:number}){
  const viewport=useRef<HTMLDivElement>(null),track=useRef<HTMLDivElement>(null),group=useRef<HTMLDivElement>(null);
  const animation=useRef<gsap.core.Tween|null>(null);
@@ -40,7 +42,7 @@ function Track({reviews,reverse,paused,startIndex=0}:{reviews:Review[];reverse:b
   <div className="voice-track" ref={track}>
    {[0,1,2,3,4,5].map(copy=><div className="voice-group" key={copy} ref={copy===0?group:undefined} aria-hidden={copy!==0}>
     {reviews.map((r,i)=><article className="voice-card" key={r.id}>
-     <span className="voice-stars" aria-label="Five stars">★★★★★</span>
+     <span className="voice-stars" aria-hidden="true">❝</span>
      <blockquote>“{r.quote}”</blockquote>
      <div className="voice-person">
       {r.image_url?<img className="voice-portrait" src={r.image_url} alt="" loading="lazy" onError={e=>{e.currentTarget.style.display='none'}}/>:null}
@@ -58,12 +60,13 @@ export default function TestimonialStream(){
  const reviews:Review[]=published.length?published:samples;
  const split=Math.ceil(reviews.length/2),top=reviews.slice(0,split),bottom=reviews.slice(split);
  const [paused,setPaused]=useState(false);
+ if(!reviews.length)return null;
  return <section className="voice-section" aria-labelledby="voice-title">
   <div className="container voice-heading">
    <span className="kicker">07 / CLIENT VOICES</span>
    <h2 id="voice-title">Built on trust.<br/><em>Remembered for<br/> results.</em></h2>
    <div className="voice-intro">
-    <p>{published.length?'What our clients and collaborators say about working with us.':'Illustrative client feedback showing how real testimonials could appear on the finished website. Names and quotations are fictional.'}</p>
+    <p>{published.length ? "What our clients and collaborators say about working with us." : "Sample testimonials for design review. These quotes are illustrative and are not client endorsements."}</p>
     <button className="motion-toggle" onClick={()=>setPaused(v=>!v)} aria-pressed={paused}>{paused?'Play testimonials':'Pause testimonials'} <span aria-hidden="true">{paused?'▶':'Ⅱ'}</span></button>
    </div>
   </div>

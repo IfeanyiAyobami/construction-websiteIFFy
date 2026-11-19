@@ -1,1 +1,2 @@
-Add building-construction.mp4, infrastructure.mp4, engineering.mp4, completed-projects.mp4. Posters are already provided. If a video is absent, its poster remains visible. Use licensed, optimized MP4 (H.264) files.
+All four hero slides include muted H.264 video and a matching poster. The opening slide also has a portrait mobile cut.
+The clips are illustrative and should be cleared for public website use before production deployment.

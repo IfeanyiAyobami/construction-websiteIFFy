@@ -72,3 +72,21 @@ Run `supabase/006_workspace_notifications.sql` once in the Supabase SQL Editor, 
 PDFs use the browser's native PDF viewer for page navigation, zoom, and download; support varies by browser. Private preview links are short lived; reopen the document if the preview expires. Other document formats must be opened in their native application. The dashboard's storage count is based on up to 1,000 loaded document revisions and the capacity entered in settings is an administrative reporting target, not a hard storage limit.
 
 To verify the complete workflow, create a separate active reviewer account, add the examples as drafts while signed in as the administrator, assign the reviewer, and submit a drawing. Sign in as that reviewer to request a revision or approve; the uploader cannot approve their own revision. Repeat on the actual hosted site after deploying and configuring Supabase. Do not use live project drawings as a simulation if they are intended for construction.
+
+## 2026 visual refresh
+
+The public site (home and all interior pages) was rebuilt on a new design system. The CMS admin, staff workspace, API routes and database are unchanged.
+
+- `src/app/refresh.css`: the design system, scoped to `.k-site` with a `k-` prefix. Type is Space Grotesk and Manrope, as in the original build.
+- `src/components/site/`: `SiteShell` (smooth scroll, preloader, pointer follower, header, footer), `motion.ts` (the GSAP system), `SiteHeader` (dark glass bar with picture dropdowns; full-screen list on small screens), `SiteFooter`, `FlowField`, `Pic`, `content.ts`.
+- `src/components/Home.tsx`: capabilities cards, numbers panel, picture band, project showcase, pinned "How we work", fit check, partners, leadership cards, FAQ.
+- `src/components/HeroVideoCarousel.tsx`: the original hero, with captions written from Konsadem's copy.
+- `src/components/TestimonialStream.tsx`: the original testimonial rows. Until the CMS has published testimonials it shows sample quotes with a notice saying they are illustrative. Replace them before launch.
+- `src/components/Interior.tsx`: interior pages. Copy still comes from `src/lib/konsadem-copy.json`.
+- `src/lib/media.ts`: picture assignments. See PHOTO_SOURCES.md.
+
+Motion is opt-in through data attributes (`data-split`, `data-fill`, `data-fade`, `data-stagger`, `data-clip`, `data-parallax`, `data-count`, `data-line`, `data-magnetic`, `data-marquee`, `data-theme`), documented at the top of `motion.ts`. It uses GSAP ScrollTrigger, SplitText, DrawSVG and CustomEase with Lenis for smooth scrolling, and switches off for visitors who prefer reduced motion.
+
+Removed: the Three.js scene and the `three` dependency, the old header and motion hook, and the luxury-house hero posters.
+
+Before launch: confirm picture rights, add leadership portraits, replace the sample testimonials, and review the fit-check questions in `Home.tsx`.

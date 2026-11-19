@@ -1,48 +1,392 @@
 'use client';
-import MegaHeader from './MegaHeader';
-import {CmsLanding} from './CmsPublic';
-import {useEffect,useRef,useState} from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import {ArrowUpRight,ArrowRight,Menu,X,HardHat,ShieldCheck,MoveUpRight,MapPin,Mail,Phone,CheckCircle2,ChevronDown} from 'lucide-react';
-import {useCinematicMotion} from './useCinematicMotion';
-const I='https://images.unsplash.com/';
-const imgs={tower:I+'photo-1486406146926-c627a92ad1ab?w=1600&q=85',work:I+'photo-1504307651254-35680f356dfd?w=1600&q=85',build:I+'photo-1487958449943-2429e8be8625?w=1600&q=85',office:I+'photo-1497366754035-f200968a6e72?w=1600&q=85',bridge:I+'photo-1511818966892-d7d671e672a2?w=1600&q=85',city:I+'photo-1519501025264-65ba15a82390?w=1600&q=85',home:I+'photo-1600607687920-4e2a09cf159d?w=1600&q=85'};
-const nav=[['Home','/'],['About','/about'],['Services','/services'],['Projects','/projects'],['Team','/team'],['Careers','/careers'],['Insights','/insights'],['Contact','/contact']];
-const services=[['Civil & Structural Engineering','From structural concepts to robust construction solutions.',imgs.work],['Building Construction','Commercial, institutional and residential developments.',imgs.build],['Infrastructure Development','Transport links, public works and resilient infrastructure.',imgs.bridge],['Project Management','Coordination, cost awareness and disciplined delivery.',imgs.office],['Renovation & Fit-Out','Adaptive reuse, refurbishment and interior transformations.',imgs.home],['Engineering Consultancy','Practical technical guidance from concept to completion.',imgs.tower]];
-const projects=[['The Meridian Tower','Commercial development','Lagos',imgs.tower],['The Greenline Interchange','Infrastructure','Abuja',imgs.bridge],['The Terraces','Residential','Port Harcourt',imgs.home],['Civic Works Complex','Institutional','Ibadan',imgs.build],['Metropolitan Offices','Commercial','Lagos',imgs.office],['Urban Connection','Infrastructure','Enugu',imgs.city]];
-const team=[
- {name:'Daniel Okafor',role:'Managing Director',image:'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=900',experience:'18 years · Construction leadership',about:'Daniel provides strategic direction across the business, connecting project ambition with responsible delivery, long-term partnerships and commercial discipline.',focus:['Corporate strategy','Project governance','Client partnerships']},
- {name:'Amara Eze',role:'Director of Projects',image:'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=900',experience:'14 years · Project delivery',about:'Amara coordinates multidisciplinary teams from early planning through handover, championing clear communication, practical programming and accountable execution.',focus:['Programme delivery','Stakeholder engagement','Cost and risk oversight']},
- {name:'Tunde Balogun',role:'Lead Civil Engineer',image:'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=900',experience:'12 years · Civil engineering',about:'Tunde brings a detail-driven engineering mindset to structural coordination, technical reviews and buildability decisions on complex construction projects.',focus:['Structural coordination','Site engineering','Technical assurance']},
- {name:'Zara Ibrahim',role:'Head of Operations',image:'https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=900',experience:'11 years · Operations',about:'Zara oversees the people, processes and resources that support safe, efficient and consistent delivery across teams and project locations.',focus:['Operational systems','Safety culture','Resource planning']}
-];
-function Brand(){return <Link href="/" className="inter-brand"><img src="/brand/k-symbol.svg" alt=""/><span>KONSADEM<small>ASSOCIATES LTD</small></span></Link>}
-function Header(){return <MegaHeader/>}
-function Footer(){return <footer className="inter-footer"><div className="inter-footer-grid"><div><Brand/><p>Engineering tomorrow, today. A premium concept for a forward-thinking Nigerian construction company.</p></div><div><strong>EXPLORE</strong>{nav.slice(0,5).map(([n,l])=><Link href={l} key={l}>{n}</Link>)}</div><div><strong>MORE</strong>{nav.slice(5).map(([n,l])=><Link href={l} key={l}>{n}</Link>)}</div><div><strong>LET'S CONNECT</strong><span><MapPin size={15}/> Nigeria · address pending</span><span><Mail size={15}/> contact@example.com</span><span><Phone size={15}/> +234 000 000 0000</span></div></div><div className="inter-footer-base">© 2026 KONSADEM. CONCEPT WEBSITE — ALL COMPANY INFORMATION IS DEMONSTRATION CONTENT. <Link href="/">BACK TO HOME ↗</Link></div></footer>}
-function Hero({kicker,title,subtitle,img}:{kicker:string,title:string,subtitle:string,img:string}){return <section className="inter-hero"><div className="inter-hero-img" style={{backgroundImage:`url(${img})`}}/><div className="inter-hero-shade"/><div className="inter-hero-content"><span className="inter-kicker">KONSADEM / {kicker}</span><h1>{title}</h1><p>{subtitle}</p><div className="inter-hero-bottom"><span>ENGINEERED TO MAKE A DIFFERENCE</span><span>SCROLL TO EXPLORE ↓</span></div></div></section>}
-function SectionHead({eyebrow,title,desc}:{eyebrow:string,title:string,desc?:string}){return <div className="inter-section-head anim"><div><span className="inter-kicker">{eyebrow}</span><h2>{title}</h2></div>{desc&&<p>{desc}</p>}</div>}
-function ContactStrip(){return <section className="inter-cta anim"><span>YOUR NEXT CHAPTER STARTS HERE</span><h2>HAVE A VISION?<br/><em>LET'S BUILD IT.</em></h2><Link href="/contact">Let's talk about your project <ArrowUpRight/></Link></section>}
-function About(){return <><Hero kicker="OUR STORY" title="BUILT ON PURPOSE. DRIVEN BY POSSIBILITY." subtitle="A fresh approach to engineering — where rigorous thinking and bold ambition meet." img={imgs.office}/><section className="inter-section inter-split"><div className="inter-photo anim"><img src={imgs.build} alt="Modern architecture"/><span>01 / OUR STORY</span></div><div className="anim"><span className="inter-kicker">A DIFFERENT WAY TO BUILD</span><h2 className="inter-h2">WE SEE MORE THAN <em>STRUCTURES.</em></h2><p className="inter-lead">We see the people, places and possibilities that every project can unlock.</p><p>From first sketches to final handover, our approach brings thoughtful engineering, clear communication and careful execution together. We design for today while keeping tomorrow in view.</p><Link className="inter-btn" href="/services">Explore our expertise <ArrowUpRight size={18}/></Link></div></section><section className="inter-dark inter-section"><SectionHead eyebrow="THE PRINCIPLES" title="OUR VALUES. YOUR CONFIDENCE." desc="A thoughtful process underpins every remarkable result."/><div className="inter-value-grid">{[['01','Integrity','We believe trust is earned through openness and accountability.'],['02','Precision','Technical excellence starts with attention to every detail.'],['03','Collaboration','The best work happens when great minds build together.'],['04','Progress','We embrace better methods and more resilient solutions.']].map(([n,t,d])=><article className="inter-value anim" key={n}><span>{n} /</span><h3>{t}</h3><p>{d}</p><ArrowUpRight/></article>)}</div></section><section className="inter-section"><SectionHead eyebrow="OUR PROCESS" title="FROM CONCEPT TO COMPLETION."/><div className="inter-steps">{[['01','Discover','We listen, assess and understand the opportunity.'],['02','Design','We translate ideas into practical engineering solutions.'],['03','Deliver','We coordinate and execute with care and precision.'],['04','Evolve','We evaluate outcomes and keep improving.']].map(([n,t,d])=><article className="anim" key={n}><b>{n}</b><h3>{t}</h3><p>{d}</p></article>)}</div></section><ContactStrip/></>}
-function Services(){return <><Hero kicker="WHAT WE DO" title="EXPERTISE THAT MOVES THE WORLD FORWARD." subtitle="Integrated engineering and construction thinking, shaped around the needs of each project." img={imgs.work}/><section className="inter-section"><SectionHead eyebrow="OUR CAPABILITIES" title="BUILT FOR EVERY CHALLENGE." desc="Six disciplines. One shared commitment to delivering with purpose."/><div className="inter-service-grid">{services.map(([n,d,img],i)=><article className="inter-service-card anim" key={n}><div className="inter-service-img"><img src={img} alt="Construction and architecture"/></div><span>0{i+1} / SERVICE</span><h3>{n}</h3><p>{d}</p><Link href="/contact">Discuss this service <ArrowUpRight size={18}/></Link></article>)}</div></section><section className="inter-dark inter-section"><SectionHead eyebrow="OUR APPROACH" title="ENGINEERED WITH INTENTION."/><div className="inter-wide-image anim" style={{backgroundImage:`url(${imgs.bridge})`}}><h3>THINK BIG.<br/>BUILD BETTER.</h3></div></section><ContactStrip/></>}
-function Projects(){const [filter,setFilter]=useState('All');const cats=['All','Commercial','Infrastructure','Residential','Institutional'];const shown=projects.filter(p=>filter==='All'||p[1].toLowerCase().includes(filter.toLowerCase()));return <><Hero kicker="OUR PROJECTS" title="WORK THAT SPEAKS FOR ITSELF." subtitle="A visual exploration of the places, spaces and infrastructure we can help shape." img={imgs.tower}/><section className="inter-section"><SectionHead eyebrow="SELECTED WORK" title="DESIGNED TO MAKE AN IMPACT." desc="These are illustrative concept projects, not verified company work."/><div className="inter-filters">{cats.map(c=><button key={c} className={filter===c?'active':''} onClick={()=>setFilter(c)}>{c}</button>)}</div><div className="inter-project-grid">{shown.map(([n,t,l,img],i)=><Link href={'/projects/'+projects.indexOf(projects.find(x=>x[0]===n)!)} className="inter-project-tile anim" key={n}><img src={img} alt={n}/><span className="inter-project-info"><small>0{i+1} / {t.toUpperCase()} · {l.toUpperCase()}</small><strong>{n}</strong><ArrowUpRight/></span></Link>)}</div></section><ContactStrip/></>}
-const projectDetails=[
- {challenge:'Creating an efficient commercial landmark within a dense urban setting.',scope:'A multi-storey office concept bringing together flexible workspaces, efficient vertical circulation and a carefully considered structural grid.',solution:'The proposed approach balances structural efficiency, facade performance, construction sequencing and long-term operational needs.',impact:'A contemporary workplace designed around adaptable floor plates, daylight and long-term resilience.',services:['Structural design coordination','Building construction','Project management'],metrics:[['12','Concept storeys'],['24,000 m²','Illustrative floor area'],['2026','Concept year']]},
- {challenge:'Improving movement across a growing urban transport corridor.',scope:'A proposed road interchange and supporting infrastructure designed to improve access, circulation and safe connectivity.',solution:'The concept considers traffic phasing, drainage, earthworks, durable pavement systems and practical construction staging.',impact:'A safer, more legible and connected urban corridor for future growth.',services:['Civil infrastructure','Road and drainage works','Construction supervision'],metrics:[['3.8 km','Illustrative corridor'],['04','Proposed connections'],['2026','Concept year']]},
- {challenge:'Delivering comfortable homes without compromising efficient land use.',scope:'A contemporary residential development concept with layered terraces, private outdoor areas and shared landscaped spaces.',solution:'A modular structural strategy, passive design principles and coordinated services support a practical, people-first development.',impact:'Flexible living environments designed for comfort, maintainability and community.',services:['Residential construction','Structural coordination','Fit-out planning'],metrics:[['36','Concept residences'],['4,800 m²','Illustrative site area'],['2026','Concept year']]},
- {challenge:'Combining public-facing functions with robust operational requirements.',scope:'An institutional facility concept integrating administrative space, shared services and accessible public areas.',solution:'Clear zoning, durable material choices, circulation planning and buildability reviews shape the proposed delivery strategy.',impact:'A welcoming civic environment built around accessibility and long-term use.',services:['Institutional construction','Engineering consultancy','Project management'],metrics:[['8,200 m²','Illustrative area'],['03','Concept wings'],['2026','Concept year']]},
- {challenge:'Reimagining a workplace for modern, flexible commercial use.',scope:'A commercial office concept with adaptable floor plates, collaborative zones and efficient building services.',solution:'Early technical coordination aligns structural systems, services integration, daylight access and maintainability.',impact:'An efficient and adaptable workplace concept with room to evolve.',services:['Commercial construction','Building services coordination','Project delivery'],metrics:[['9,600 m²','Illustrative area'],['08','Concept floors'],['2026','Concept year']]},
- {challenge:'Connecting neighbourhoods through thoughtfully designed infrastructure.',scope:'A conceptual urban mobility link with improved crossings, public realm and supporting civil works.',solution:'The proposed strategy addresses drainage, accessibility, construction phasing and long-term infrastructure durability.',impact:'A more connected urban environment designed with everyday users in mind.',services:['Infrastructure design','Roadworks','Engineering consultancy'],metrics:[['2.4 km','Illustrative route'],['06','Concept junctions'],['2026','Concept year']]}
-];
-function ProjectDetail({id}:{id:number}){const idx=id>=0&&id<projects.length?id:0;const p=projects[idx];const d=projectDetails[idx];return <>
- <Hero kicker="PROJECTS / CASE STUDY" title={p[0].toUpperCase()+'.'} subtitle={`${p[1]} / ${p[2]} · A detailed demonstration of how a real engineering project can be presented.`} img={p[3]}/>
- <section className="inter-section case-intro"><div className="anim"><span className="inter-kicker">01 / PROJECT OVERVIEW</span><h2 className="inter-h2">A PROJECT WITH <em>PURPOSE.</em></h2><p className="case-disclaimer">DEMONSTRATION CASE STUDY — ALL PROJECT DETAILS AND METRICS ARE FICTIONAL.</p></div><div className="anim"><p className="inter-lead">{d.scope}</p><p>{d.challenge}</p><div className="case-facts"><div><small>LOCATION</small><strong>{p[2]}, Nigeria</strong></div><div><small>SECTOR</small><strong>{p[1]}</strong></div><div><small>PROJECT STATUS</small><strong>Concept demonstration</strong></div><div><small>DELIVERY MODEL</small><strong>Design + build concept</strong></div></div></div></section>
- <section className="case-metrics inter-dark"><div className="case-metrics-inner">{d.metrics.map(([v,l])=><div className="anim" key={l}><strong>{v}</strong><span>{l}</span></div>)}</div></section>
- <section className="case-gallery inter-section"><div className="case-gallery-main anim"><img src={p[3]} alt={`${p[0]} illustrative architectural project image`}/><span>01 / CONCEPT VISUALISATION</span></div><div className="case-gallery-secondary anim"><img src={imgs.work} alt="Construction site operations"/><span>02 / SITE OPERATIONS</span></div><div className="case-gallery-secondary anim"><img src={imgs.office} alt="Technical project coordination"/><span>03 / TECHNICAL COORDINATION</span></div></section>
- <section className="inter-section case-narrative"><div className="case-narrative-main"><span className="inter-kicker">02 / THE ENGINEERING STORY</span><h2 className="inter-h2">FROM CHALLENGE TO <em>SOLUTION.</em></h2><article className="case-story-block anim"><span>01 — THE CHALLENGE</span><h3>Understanding the brief</h3><p>{d.challenge} Every successful project begins by understanding the site, the stakeholders and the technical constraints that shape the work.</p></article><article className="case-story-block anim"><span>02 — OUR APPROACH</span><h3>Designing for buildability</h3><p>{d.solution} The design process brings architectural intent, engineering analysis, cost awareness and construction logistics into one coordinated conversation.</p></article><article className="case-story-block anim"><span>03 — THE PROPOSED OUTCOME</span><h3>Built for what comes next</h3><p>{d.impact} On a real project, this section would include approved completion photographs, measurable outcomes and client feedback.</p></article></div><aside className="case-sidebar anim"><div className="case-side-panel"><span className="inter-kicker">PROJECT SERVICES</span><h3>Expertise in action.</h3>{d.services.map((v,i)=><div className="case-service-row" key={v}><span>0{i+1}</span><strong>{v}</strong><ArrowUpRight size={16}/></div>)}<Link href="/services" className="case-side-link">Explore all services <ArrowUpRight size={18}/></Link></div><div className="case-side-cta"><span>HAVE A SIMILAR BRIEF?</span><h3>Let's make your project possible.</h3><p>Speak with our team about your objectives, timeline and technical requirements.</p><Link href="/contact">Start a conversation <ArrowUpRight size={18}/></Link></div></aside></section>
- <section className="inter-section case-next"><SectionHead eyebrow="03 / KEEP EXPLORING" title="MORE WORK. MORE POSSIBILITIES."/><div className="case-next-grid">{[1,2].map(offset=>{const next=(idx+offset)%projects.length;return <Link href={'/projects/'+next} className="case-next-card anim" key={next}><img src={projects[next][3]} alt={projects[next][0]}/><span>{projects[next][1]} / {projects[next][2]}</span><strong>{projects[next][0]} <ArrowUpRight/></strong></Link>})}</div></section><ContactStrip/></>}
-function Team(){const [selected,setSelected]=useState<number|null>(null);useEffect(()=>{if(selected===null)return;const key=(e:KeyboardEvent)=>{if(e.key==='Escape')setSelected(null)};document.addEventListener('keydown',key);const old=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.removeEventListener('keydown',key);document.body.style.overflow=old}},[selected]);const person=selected===null?null:team[selected];return <><Hero kicker="OUR PEOPLE" title="THE MINDS BEHIND THE MILESTONES." subtitle="Great projects begin with great people. Meet the thinking, care and collaboration behind every milestone." img={imgs.work}/><section className="inter-section"><SectionHead eyebrow="LEADERSHIP / OUR PEOPLE" title="PEOPLE WHO MAKE PROGRESS POSSIBLE." desc="Explore the sample profiles below. All names, biographies and portraits are placeholders."/><div className="inter-team-grid">{team.map((person,i)=><button type="button" className="inter-team-card anim team-interactive" key={person.name} onClick={()=>setSelected(i)} aria-label={`Read about ${person.name}`}><div className="team-image"><img src={person.image} alt={`Illustrative portrait for ${person.name}`}/><span className="team-open"><ArrowUpRight size={22}/></span></div><span>0{i+1} / LEADERSHIP</span><h3>{person.name}</h3><p>{person.role}</p><small>VIEW PROFILE ↗</small></button>)}</div></section><section className="inter-dark inter-section"><SectionHead eyebrow="CULTURE" title="GOOD PEOPLE. GREAT WORK."/><div className="inter-wide-image anim" style={{backgroundImage:`url(${imgs.office})`}}><h3>ONE TEAM.<br/>SHARED AMBITION.</h3></div></section><ContactStrip/>{person&&<div className="team-modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setSelected(null)}}><section role="dialog" aria-modal="true" aria-labelledby="team-dialog-name" className="team-modal"><button className="team-modal-close" onClick={()=>setSelected(null)} aria-label="Close profile"><X/></button><div className="team-modal-photo"><img src={person.image} alt="Illustrative construction team portrait"/></div><div className="team-modal-content"><span className="inter-kicker">MEET THE TEAM / PROFILE 0{selected!+1}</span><h2 id="team-dialog-name">{person.name}</h2><strong className="team-role">{person.role}</strong><span className="team-experience">{person.experience}</span><p>{person.about}</p><h3>AREAS OF FOCUS</h3><ul>{person.focus.map(f=><li key={f}><CheckCircle2 size={17}/>{f}</li>)}</ul><p className="team-demo-note">Illustrative team profile. Replace with verified staff information and approved photography.</p><Link href="/contact" onClick={()=>setSelected(null)}>Connect with our team <ArrowUpRight size={18}/></Link></div></section></div>}</>}
-function Careers(){return <><Hero kicker="CAREERS" title="YOUR NEXT BIG THING STARTS HERE." subtitle="Build meaningful work with people who care about engineering, innovation and progress." img={imgs.build}/><section className="inter-section"><SectionHead eyebrow="LIFE AT KONSADEM" title="GROW WITH PURPOSE." desc="A place for curious minds, skilled hands and ambitious thinkers."/><div className="inter-value-grid light">{[['01','Real impact','Work on challenges that shape the built environment.'],['02','Growth mindset','Learn, collaborate and expand your expertise.'],['03','Team culture','Bring your ideas to a supportive professional team.']].map(([n,t,d])=><article className="inter-value anim" key={n}><span>{n}</span><h3>{t}</h3><p>{d}</p></article>)}</div></section><section className="inter-section inter-muted"><SectionHead eyebrow="OPPORTUNITIES" title="EXPLORE OPEN ROLES." desc="Illustrative openings only; no active recruitment is implied."/><div className="inter-jobs">{[['Civil Engineer','Engineering','Lagos / Hybrid'],['Project Coordinator','Project Delivery','Abuja / On-site'],['Quantity Surveyor','Commercial','Ibadan / On-site']].map(([n,d,l])=><article className="anim" key={n}><div><small>{d} / SAMPLE ROLE</small><h3>{n}</h3><span>{l}</span></div><Link href="/contact">Enquire <ArrowUpRight/></Link></article>)}</div></section><ContactStrip/></>}
-function Insights(){return <><Hero kicker="INSIGHTS" title="IDEAS THAT SHAPE TOMORROW." subtitle="Perspectives on construction, engineering, technology and the future of the built environment." img={imgs.bridge}/><section className="inter-section"><SectionHead eyebrow="JOURNAL" title="WHAT'S ON OUR MIND." desc="Sample editorial articles for layout demonstration."/><div className="inter-service-grid">{[['Building resilient infrastructure','Ideas',imgs.bridge],['Technology on the modern jobsite','Innovation',imgs.work],['The next chapter of urban development','Design',imgs.city],['Putting safety at the centre','Culture',imgs.build],['Sustainable materials and methods','Sustainability',imgs.home],['Why great projects begin with collaboration','People',imgs.office]].map(([n,c,img],i)=><article className="inter-service-card anim" key={n}><div className="inter-service-img"><img src={img} alt="Editorial architecture photograph"/></div><span>0{i+1} / {c.toUpperCase()}</span><h3>{n}</h3><p>Demonstration article summary. Replace with an approved company story.</p><span className="inter-read">COMING SOON <ArrowUpRight size={17}/></span></article>)}</div></section><ContactStrip/></>}
-function Contact(){const [sent,setSent]=useState(false);return <><Hero kicker="CONTACT" title="LET'S MAKE SOMETHING REMARKABLE." subtitle="Have a project in mind? Tell us about your vision and let's explore what's possible." img={imgs.city}/><section className="inter-section inter-contact-layout"><div className="anim"><span className="inter-kicker">START A CONVERSATION</span><h2 className="inter-h2">GREAT THINGS <em>BEGIN HERE.</em></h2><p>Use this demonstration form to preview the experience. A production form service must be connected before launch.</p><div className="inter-contact-detail"><span><Mail/> contact@example.com</span><span><Phone/> +234 000 000 0000</span><span><MapPin/> Nigeria · office details pending</span></div></div><form className="inter-form anim" onSubmit={e=>{e.preventDefault();setSent(true)}}><div className="inter-form-row"><label>YOUR NAME<input required placeholder="Full name"/></label><label>EMAIL ADDRESS<input type="email" required placeholder="you@company.com"/></label></div><div className="inter-form-row"><label>PHONE NUMBER<input placeholder="+234..."/></label><label>PROJECT TYPE<select defaultValue=""><option value="" disabled>Select a service</option>{services.map(s=><option key={s[0]}>{s[0]}</option>)}</select></label></div><label>YOUR MESSAGE<textarea required rows={6} placeholder="Tell us about your project..."/></label><button type="submit">{sent?'Demo submission recorded locally':'Send project enquiry'} <ArrowUpRight size={18}/></button>{sent&&<p role="status">This is a demonstration form. No message was sent to a company inbox.</p>}</form></section><ContactStrip/></>}
-const pages:{[key:string]:()=>React.ReactNode}={about:About,services:Services,projects:Projects,team:Team,careers:Careers,insights:Insights,contact:Contact};
-export default function Interior({page,projectId}:{page:string,projectId?:number}){const root=useRef<HTMLDivElement>(null);useCinematicMotion(root, `${page}-${projectId ?? 'index'}`);const Page=pages[page]||About;return <div ref={root} className="inter-site"><Header/><main>{projectId!==undefined?<ProjectDetail id={projectId}/>:<CmsLanding page={page} fallback={<Page/>}/>}</main><Footer/></div>}
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import copy from '@/lib/konsadem-copy.json';
+import { media, serviceMedia, type Photo } from '@/lib/media';
+import { CmsLanding, usePublished } from './CmsPublic';
+import SiteShell from './site/SiteShell';
+import Pic from './site/Pic';
+import { TeamCards } from './Home';
+import { ScrollTrigger } from './site/motion';
+import { between, clients, offices, phones, projectParts, pullQuote, reasons, slugify, story, values } from './site/content';
+
+const sub = (lines: string[]) => (lines.find((l) => l.startsWith('Sub-headline:')) || '').replace('Sub-headline: ', '');
+
+/* ── Shared blocks ────────────────────────────────────────────────────── */
+function PageHero({ kicker, title, accent, subtitle, photo }: { kicker: string; title: string; accent?: string; subtitle?: string; photo: Photo }) {
+  return (
+    <section className="k-phero" data-theme="dark">
+      <div className="k-phero-media"><div className="k-phero-pic" data-intro-media><Pic photo={photo} eager w={2400} decorative /></div><div className="k-hero-shade" /></div>
+      <div className="k-wrap k-phero-content">
+        <p className="k-eyebrow" data-intro-fade><span className="k-dot" />Konsadem · {kicker}</p>
+        <h1 className="k-phero-title" data-intro-split>{title}{accent && <> <i>{accent}</i></>}</h1>
+        {subtitle && <p className="k-phero-sub" data-intro-fade>{subtitle}</p>}
+      </div>
+    </section>
+  );
+}
+
+function Head({ label, title, accent, children, light }: { label: string; title: string; accent?: string; children?: React.ReactNode; light?: boolean }) {
+  return (
+    <header className="k-head">
+      <p className={`k-label ${light ? 'k-label-light' : ''}`} data-fade>{label}</p>
+      <h2 className="k-h2" data-split>{title}{accent && <> <i>{accent}</i></>}</h2>
+      {children}
+    </header>
+  );
+}
+
+/* ── Pages ────────────────────────────────────────────────────────────── */
+function About() {
+  const who = between(copy.about, 'Who we are', 'Our story');
+  const mission = between(copy.about, 'Mission', 'Vision (draft for approval)')[0];
+  const tools = between(copy.about, 'Tools and technology')[0];
+  return (
+    <>
+      <PageHero kicker="About" title="Built in Ibadan." accent="Trusted across Nigeria." subtitle={sub(copy.about)} photo={media.pageAbout} />
+      <section className="k-section" data-theme="light">
+        <div className="k-wrap k-split">
+          <Head label="01 / Who we are" title="A multidisciplinary firm of" accent="engineers and consultants." />
+          <div className="k-prose">
+            <p className="k-lead" data-fill>{who[0]}</p>
+            {who.slice(1).map((p) => <p className="k-body" key={p} data-fade>{p}</p>)}
+            <Link href="/why-konsadem" className="k-textlink" data-fade>Why Konsadem <ArrowUpRight aria-hidden="true" /></Link>
+          </div>
+        </div>
+      </section>
+      <section className="k-section k-dark" data-theme="dark">
+        <div className="k-wrap">
+          <Head light label="02 / Our story" title="From a three-person practice to" accent="a national firm." />
+          <ol className="k-timeline">
+            {story.map(([when, what]) => (
+              <li key={when} data-fade><i className="k-rule" data-line /><span className="k-timeline-when">{when}</span><p>{what}</p></li>
+            ))}
+          </ol>
+        </div>
+      </section>
+      <section className="k-section k-mission" data-theme="light">
+        <div className="k-wrap">
+          <p className="k-label" data-fade>03 / Our mission</p>
+          <p className="k-statement" data-fill>{mission}</p>
+        </div>
+      </section>
+      <section className="k-section k-tint" data-theme="light">
+        <div className="k-wrap">
+          <Head label="04 / Our values" title="Nine commitments behind every drawing" accent="we sign." />
+          <div className="k-cards k-cards-3" data-stagger>
+            {values.map(([name, text], i) => (
+              <article className="k-card" key={name}><span className="k-card-no">{String(i + 1).padStart(2, '0')}</span><h3>{name}</h3><p>{text}</p></article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="k-section" data-theme="light">
+        <div className="k-wrap k-split">
+          <Head label="05 / Tools and technology" title="Modern tools, used by people" accent="who know the ground." />
+          <div className="k-prose">
+            <p className="k-body" data-fade>{tools}</p>
+            <ul className="k-tags k-tags-dark" data-stagger>
+              {['AutoCAD', 'CivilCAD', 'WaterCAD', 'HEC-HMS', 'SWAT', 'MIKE HYDRO', 'WEAP', 'GPS', 'Total stations', 'Borehole CCTV'].map((t) => <li key={t}>{t}</li>)}
+            </ul>
+            <Link href="/team" className="k-textlink" data-fade>Meet our leadership <ArrowUpRight aria-hidden="true" /></Link>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function Services() {
+  return (
+    <>
+      <PageHero kicker="Services" title="Every discipline your project needs," accent="under one roof." subtitle="From the first feasibility question to the last inspection on site, Konsadem covers the full range of civil, water, environmental and building engineering." photo={media.pageServices} />
+      <section className="k-section" data-theme="light">
+        <div className="k-wrap">
+          <nav className="k-jump" aria-label="Services on this page" data-stagger>
+            {copy.services.map((s, i) => <a key={s.title} href={'#' + slugify(s.title)}><span>{String(i + 1).padStart(2, '0')}</span>{s.title}</a>)}
+          </nav>
+          {copy.services.map((s, i) => {
+            const deliver = s.body.find((l) => l.startsWith('What we deliver:'));
+            const proof = s.body.find((l) => l.startsWith('Proof:'));
+            const prose = s.body.filter((l) => l !== deliver && l !== proof);
+            return (
+              <article className="k-service" id={slugify(s.title)} key={s.title}>
+                <i className="k-rule" data-line />
+                <div className="k-service-head">
+                  <span className="k-service-no">{String(i + 1).padStart(2, '0')}</span>
+                  <h2 className="k-h3" data-split>{s.title}</h2>
+                  <p className="k-service-tag" data-fade>{s.tagline}</p>
+                </div>
+                <div className="k-service-body">
+                  <div className="k-frame k-frame-wide" data-clip><Pic photo={serviceMedia[i]} className="k-par" w={1600} sizes="(max-width: 900px) 100vw, 60vw" decorative /></div>
+                  {prose.map((p) => <p className="k-body" key={p} data-fade>{p}</p>)}
+                  {deliver && (
+                    <div data-fade>
+                      <p className="k-label">What we deliver</p>
+                      <ul className="k-tags k-tags-dark">
+                        {deliver.replace('What we deliver: ', '').replace(/\.$/, '').split(/,\s+(?:and\s+)?/).map((d) => <li key={d}>{d.replace(/^and\s+/, '')}</li>)}
+                      </ul>
+                    </div>
+                  )}
+                  {proof && <p className="k-proof" data-fade><span className="k-label">Proof</span>{proof.replace('Proof: ', '')}</p>}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </>
+  );
+}
+
+const archivePhotos: Record<number, string> = { 2: '068', 5: '083', 8: '146', 13: '163' };
+const projectImages: Record<string, Photo[]> = {
+  'Water and sanitation': [media.pageContact, media.projLagosWater, media.svcWater],
+  'Dams, irrigation and hydropower': [media.svcDams, media.heroDam, media.pageWhy],
+  'Roads, drainage and erosion control': [media.projChannel, media.svcMechanical, media.pageProjects],
+  'Structures and buildings': [media.svcStructures, media.culture, media.heroCity],
+  'Environment and solid waste': [media.projWaste, media.svcEnvironment, media.svcStudies],
+};
+
+function Projects() {
+  const [filter, setFilter] = useState('All');
+  const published = usePublished('projects');
+  const archive = copy.projects.map((p, i) => {
+    const { meta, description } = projectParts(p.detail);
+    const image = archivePhotos[i];
+    const options = projectImages[p.category] ?? [media.pageProject];
+    return { title:p.title, category:p.category, description:description || meta[0],
+      href:'/projects/' + i, photo:image ? { src:`/images/field/field-${image}.jpg`, alt:p.title } : options[i % options.length],
+      illustrative:!image };
+  });
+  const rows = [...archive, ...published.filter(p => p.slug && p.title).map(p => ({
+    title:p.title!, category:p.category || 'Other projects', description:p.summary || p.location || '',
+    href:'/work/' + p.slug, photo:p.image_url ? {src:p.image_url,alt:p.title!} : media.pageProject, illustrative:!p.image_url,
+  }))];
+  const categories = ['All', ...new Set(rows.map(p => p.category))];
+  useEffect(() => { ScrollTrigger.refresh(); }, [filter, rows.length]);
+  return (
+    <section className="k-portfolio" data-theme="light">
+      <div className="k-wrap">
+        <header className="k-portfolio-head">
+          <h1>Projects</h1>
+          <p>A selection from more than 60 assignments for federal and state governments, development partners, universities and private clients.</p>
+        </header>
+        <div className="k-portfolio-filters" role="group" aria-label="Filter projects by sector">
+          {categories.map(c => <button key={c} type="button" aria-pressed={filter === c} onClick={() => setFilter(c)}>{c}</button>)}
+        </div>
+        <div className="k-portfolio-grid">
+          {rows.filter(p => filter === 'All' || p.category === filter).map(p => (
+            <Link key={p.href} href={p.href} prefetch={false} className="k-portfolio-card">
+              <span className="k-portfolio-media">
+                <Pic photo={p.photo} decorative sizes="(max-width: 680px) 100vw, 50vw" />
+                {p.illustrative && <small>Illustrative image</small>}
+                <span className="k-portfolio-arrow"><ArrowUpRight aria-hidden="true" size={18} /></span>
+              </span>
+              <h2>{p.title}</h2>
+              {p.description && <p>{p.description}</p>}
+              <span className="k-portfolio-tag">{p.category}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProjectDetail({ id }: { id: number }) {
+  const p = copy.projects[id];
+  const { meta, description } = projectParts(p.detail);
+  const archive = archivePhotos[id];
+  const next = (id + 1) % copy.projects.length;
+  const labels = ['Client', 'Location', 'Period', 'Note'];
+  return (
+    <>
+      <PageHero kicker={p.category} title={p.title} photo={media.pageProject} />
+      <section className="k-section" data-theme="light">
+        <div className="k-wrap k-split">
+          <dl className="k-facts" data-stagger>
+            <div><dt>Sector</dt><dd>{p.category}</dd></div>
+            {meta.map((m, i) => <div key={m}><dt>{labels[i] || 'Note'}</dt><dd>{m}</dd></div>)}
+          </dl>
+          <div className="k-prose">
+            <p className="k-lead" data-fill>{description || p.detail}</p>
+            {archive && (
+              <figure className="k-archive" data-fade>
+                <img src={`/images/field/field-${archive}.jpg`} alt={`${p.title}: photograph from the Konsadem project archive`} loading="lazy" />
+                <figcaption>From the Konsadem project archive</figcaption>
+              </figure>
+            )}
+            <p className="k-note" data-fade>The header photograph on this page is illustrative and does not show this project.</p>
+            <Link href="/projects" className="k-textlink" data-fade><ArrowLeft aria-hidden="true" /> All projects</Link>
+          </div>
+        </div>
+      </section>
+      <Link href={'/projects/' + next} className="k-nextproj" data-theme="dark" data-cursor="Next">
+        <div className="k-wrap">
+          <p className="k-label k-label-light">Next project</p>
+          <p className="k-h2">{copy.projects[next].title} <ArrowUpRight aria-hidden="true" /></p>
+        </div>
+      </Link>
+    </>
+  );
+}
+
+function Team() {
+  return (
+    <>
+      <PageHero kicker="Our people" title="The minds behind" accent="the milestones." subtitle="Meet the directors guiding KONSADEM Associates Ltd." photo={media.pageTeam} />
+      <section className="k-section" data-theme="light">
+        <div className="k-wrap">
+          <Head label="Leadership / Our people" title="Board of directors." />
+          <TeamCards />
+        </div>
+      </section>
+    </>
+  );
+}
+
+function Why() {
+  return (
+    <>
+      <PageHero kicker="Why Konsadem" title="The firm other firms" accent="partner with." subtitle={sub(copy.why)} photo={media.pageWhy} />
+      <section className="k-section" data-theme="light">
+        <div className="k-wrap">
+          <Head label="Six reasons" title="Why clients and international consultancies" accent="keep coming back." />
+          <div className="k-reasons">
+            {reasons.map(([title, text], i) => (
+              <article key={title} data-fade>
+                <i className="k-rule" data-line />
+                <span className="k-reason-no">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{title}</h3>
+                <p className="k-body">{text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="k-section k-dark" data-theme="dark">
+        <div className="k-wrap">
+          <Head light label="Who we work for" title="Clients who" accent="expect a lot." />
+          <div className="k-cards k-cards-3 k-cards-dark" data-stagger>
+            {clients.map(([group, list]) => <article className="k-card" key={group}><h3>{group}</h3><p>{list}</p></article>)}
+          </div>
+        </div>
+      </section>
+      <section className="k-section k-mission" data-theme="light">
+        <div className="k-wrap"><p className="k-statement" data-fill>“{pullQuote}”</p></div>
+      </section>
+    </>
+  );
+}
+
+function Careers() {
+  return (
+    <>
+      <PageHero kicker="Careers" title="Build your career on work" accent="that matters." subtitle="Water, roads and the infrastructure communities depend on." photo={media.pageCareers} />
+      <section className="k-section" data-theme="light">
+        <div className="k-wrap k-split">
+          <Head label="Careers" title="Talk to" accent="our team." />
+          <div className="k-prose"><p className="k-lead" data-fade>For career enquiries, email <a href="mailto:info@konsadem.com">info@konsadem.com</a>.</p></div>
+        </div>
+      </section>
+      <section className="k-section k-career-openings" id="open-roles" data-theme="light" aria-labelledby="open-roles-title">
+        <div className="k-wrap">
+          <header className="k-career-openings-head">
+            <div><p className="k-label">Opportunities</p><h2 className="k-h2" id="open-roles-title">Explore open roles.</h2></div>
+            <p>Illustrative openings only. These roles are not currently advertised as vacancies.</p>
+          </header>
+          <ul className="k-career-roles">
+            {[
+              ['Engineering', 'Civil Engineer', 'Lagos / Hybrid'],
+              ['Project Delivery', 'Project Coordinator', 'Abuja / On-site'],
+              ['Commercial', 'Quantity Surveyor', 'Ibadan / On-site'],
+            ].map(([area, role, location]) => (
+              <li key={role}>
+                <div><p className="k-label">{area} / Sample role</p><h3>{role}</h3><p>{location}</p></div>
+                <a href={`mailto:info@konsadem.com?subject=${encodeURIComponent('Careers enquiry: ' + role)}`} aria-label={`Enquire about ${role}`}>Enquire <ArrowUpRight aria-hidden="true" size={18} /></a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function Insights() {
+  return (
+    <>
+      <PageHero kicker="Insights" title="Notes from" accent="practice." subtitle="Perspectives on water, infrastructure and the built environment." photo={media.pageInsights} />
+      <section className="k-section" data-theme="light">
+        <div className="k-wrap k-split">
+          <Head label="Insights" title="Explore" accent="our work." />
+          <div className="k-prose"><Link href="/projects" className="k-textlink" data-fade>View the project portfolio <ArrowUpRight aria-hidden="true" /></Link></div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function Contact() {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const body = Array.from(new FormData(e.currentTarget), ([k, v]) => `${k}: ${v}`).join('\n');
+    window.location.href = 'mailto:info@konsadem.com?subject=' + encodeURIComponent('Website project enquiry') + '&body=' + encodeURIComponent(body);
+  };
+  return (
+    <>
+      <PageHero kicker="Contact" title="Let’s talk about" accent="your project." subtitle={sub(copy.contact)} photo={media.pageContact} />
+      <section className="k-section" data-theme="light">
+        <div className="k-wrap k-contact">
+          <div>
+            <Head label="Start a conversation" title="Tell us where you are and" accent="what you need." />
+            <div className="k-contact-lines" data-stagger>
+              <a href="mailto:info@konsadem.com" className="k-contact-mail">info@konsadem.com <ArrowUpRight aria-hidden="true" /></a>
+              {phones.map((phone) => <a key={phone} href={'tel:' + phone.replaceAll(' ', '')}>{phone}</a>)}
+            </div>
+          </div>
+          <form className="k-form" onSubmit={submit} data-fade>
+            <div className="k-form-row">
+              <label>Full name<input name="Full name" autoComplete="name" required /></label>
+              <label>Organisation<input name="Organisation" autoComplete="organization" /></label>
+            </div>
+            <div className="k-form-row">
+              <label>Email<input name="Email" type="email" autoComplete="email" required /></label>
+              <label>Phone<input name="Phone" type="tel" autoComplete="tel" /></label>
+            </div>
+            <div className="k-form-row">
+              <label>Service of interest
+                <select name="Service of interest" defaultValue=""><option value="">Select a service</option>{copy.services.map((s) => <option key={s.title}>{s.title}</option>)}</select>
+              </label>
+              <label>Project location<input name="Project location" /></label>
+            </div>
+            <label>Tell us about your project<textarea name="Project details" required rows={5} /></label>
+            <button type="submit" className="k-btn k-btn-dark">Open email draft <ArrowUpRight aria-hidden="true" /></button>
+            <p className="k-note">This opens your email app so you can send the enquiry.</p>
+          </form>
+        </div>
+      </section>
+      <section className="k-section k-tint" data-theme="light">
+        <div className="k-wrap">
+          <Head label="Locations" title="Four offices," accent="two countries." />
+          <div className="k-cards k-cards-4" data-stagger>
+            {offices.map((o, i) => <article className="k-card" key={o.name}><span className="k-card-no">{String(i + 1).padStart(2, '0')}</span><h3>{o.name}</h3><p>{o.address}</p></article>)}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+const pages: Record<string, () => React.ReactNode> = { about: About, services: Services, projects: Projects, team: Team, careers: Careers, insights: Insights, contact: Contact, 'why-konsadem': Why };
+
+export default function Interior({ page, projectId }: { page: string; projectId?: number }) {
+  const Page = pages[page] || About;
+  return (
+    <SiteShell routeKey={`${page}-${projectId ?? 'index'}`} tone={page === 'projects' ? 'light' : 'dark'} cta={page !== 'contact'}>
+      {projectId !== undefined ? <ProjectDetail id={projectId} /> : (page === 'team' || page === 'projects') ? <Page /> : <CmsLanding page={page} fallback={<Page />} />}
+    </SiteShell>
+  );
+}
